@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="text-center">
+    <button onclick="addPerson()">Add Person</button>
+    <button onclick="updateAddress()">Update Address</button>
+    <button onclick="deleteCompany()">Delete Company</button>
+</div>
+
+<div class="text-center">
+    <h2>Please have a look into the serilog logs available at "c:\temp\logs\serilog_sample.json" to get logs on entries added/updated/deleted</h2>
+</div>
+
+
+@section Scripts{
+    <script>
+        var PerformAjaxOperation = function (inputUrl, inputParameters, successCallBack, additionalParams) {
+            var deferred = $.Deferred();           
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                cache: false,
+                type: 'POST',
+                url: inputUrl,
+                data: JSON.stringify(inputParameters),
+                success: function (result) {
+                    successCallBack(result, additionalParams);
+                    deferred.resolve();
+                },
+                complete: function () {
+                },
+                error: function (req, status, error) {
+                }
+            });
+
+            return deferred.promise();
+        }
+
+        var addPerson = function () {
+            PerformAjaxOperation("/Home/AddPerson", null, function (result) { console.log(result); }, null);
+        }      
+
+        var updateAddress = function () {
+            PerformAjaxOperation("/Home/UpdateAddress", null, function (result) { console.log(result); }, null);
+        } 
+
+        var deleteCompany = function () {
+            PerformAjaxOperation("/Home/DeleteCompany", null, function (result) { console.log(result); }, null);
+        }    
+    </script>
+}
